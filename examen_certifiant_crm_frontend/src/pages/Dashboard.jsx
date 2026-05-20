@@ -82,7 +82,7 @@ export default function Dashboard() {
               </tr>
               <tr>
                 <td>Mise à jour statut commande</td>
-                <td>Commande #1432 -> CONFIRMEE</td>
+                <td>Commande #1432 {'->'} CONFIRMEE</td>
                 <td>Aujourd'hui, 10:15</td>
                 <td><span className="badge badge-primary">Succès</span></td>
               </tr>
