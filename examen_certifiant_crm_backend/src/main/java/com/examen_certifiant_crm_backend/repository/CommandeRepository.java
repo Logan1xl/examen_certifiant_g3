@@ -1,7 +1,7 @@
 package com.examen_certifiant_crm_backend.repository;
 
-import com.examen_certifiant_crm_backend.model.Commande;
-import com.examen_certifiant_crm_backend.model.Commande.Statut;
+import com.examen_certifiant_crm_backend.entity.Commande;
+import com.examen_certifiant_crm_backend.entity.Commande.Statut;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

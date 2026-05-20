@@ -1,8 +1,8 @@
 package com.examen_certifiant_crm_backend.service;
 
 import com.examen_certifiant_crm_backend.exception.ResourceNotFoundException;
-import com.examen_certifiant_crm_backend.model.Fidelite;
-import com.examen_certifiant_crm_backend.model.Fidelite.Niveau;
+import com.examen_certifiant_crm_backend.entity.Fidelite;
+import com.examen_certifiant_crm_backend.entity.Fidelite.Niveau;
 import com.examen_certifiant_crm_backend.repository.FideliteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
