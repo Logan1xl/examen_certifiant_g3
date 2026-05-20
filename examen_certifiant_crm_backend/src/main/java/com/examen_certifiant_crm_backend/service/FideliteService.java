@@ -3,6 +3,7 @@ package com.examen_certifiant_crm_backend.service;
 import com.examen_certifiant_crm_backend.exception.ResourceNotFoundException;
 import com.examen_certifiant_crm_backend.entity.Fidelite;
 import com.examen_certifiant_crm_backend.entity.Fidelite.Niveau;
+import com.examen_certifiant_crm_backend.enums.NiveauFidelite;
 import com.examen_certifiant_crm_backend.repository.FideliteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,11 +36,11 @@ public class FideliteService {
         return repository.save(fidelite);
     }
 
-    public Niveau calculerNiveau(int points) {
-        if (points >= SEUIL_PLATINUM) return Niveau.PLATINUM;
-        if (points >= SEUIL_GOLD) return Niveau.GOLD;
-        if (points >= SEUIL_SILVER) return Niveau.SILVER;
-        if (points >= SEUIL_BRONZE) return Niveau.BRONZE;
-        return Niveau.NOUVEAU;
+    public NiveauFidelite calculerNiveau(int points) {
+        if (points >= SEUIL_PLATINUM) return NiveauFidelite.PLATINUM;
+        if (points >= SEUIL_GOLD) return NiveauFidelite.GOLD;
+        if (points >= SEUIL_SILVER) return NiveauFidelite.SILVER;
+        if (points >= SEUIL_BRONZE) return NiveauFidelite.BRONZE;
+        return NiveauFidelite.NOUVEAU;
     }
 }

@@ -1,5 +1,6 @@
 package com.examen_certifiant_crm_backend.entity;
 
+import com.examen_certifiant_crm_backend.enums.NiveauFidelite;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -25,6 +26,7 @@ public class Fidelite {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Niveau niveau = Niveau.NOUVEAU;
+    private NiveauFidelite niveau = NiveauFidelite.NOUVEAU;
 
     @Column(name = "date_debut")
     private LocalDateTime dateDebut = LocalDateTime.now();
@@ -42,6 +44,8 @@ public class Fidelite {
     public void setPoints(int points) { this.points = points; }
     public Niveau getNiveau() { return niveau; }
     public void setNiveau(Niveau niveau) { this.niveau = niveau; }
+    public NiveauFidelite getNiveau() { return niveau; }
+    public void setNiveau(NiveauFidelite niveau) { this.niveau = niveau; }
     public LocalDateTime getDateDebut() { return dateDebut; }
     public void setDateDebut(LocalDateTime dateDebut) { this.dateDebut = dateDebut; }
     public LocalDateTime getDateFin() { return dateFin; }

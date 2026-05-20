@@ -9,6 +9,8 @@ import com.examen_certifiant_crm_backend.entity.Client;
 import com.examen_certifiant_crm_backend.entity.Commande;
 import com.examen_certifiant_crm_backend.entity.Commande.Statut;
 import com.examen_certifiant_crm_backend.entity.Restaurant;
+import com.examen_certifiant_crm_backend.entity.Restaurant;
+import com.examen_certifiant_crm_backend.enums.StatutCommande;
 import com.examen_certifiant_crm_backend.repository.ClientRepository;
 import com.examen_certifiant_crm_backend.repository.CommandeRepository;
 import com.examen_certifiant_crm_backend.repository.RestaurantRepository;
@@ -24,12 +26,12 @@ import java.util.Set;
 @Transactional
 public class CommandeService {
 
-    private static final Map<Statut, Set<Statut>> TRANSITIONS = Map.of(
-            Statut.EN_ATTENTE, Set.of(Statut.CONFIRMEE, Statut.ANNULEE),
-            Statut.CONFIRMEE, Set.of(Statut.EN_PREPARATION, Statut.ANNULEE),
-            Statut.EN_PREPARATION, Set.of(Statut.LIVREE, Statut.ANNULEE),
-            Statut.LIVREE, Set.of(),
-            Statut.ANNULEE, Set.of()
+    private static final Map<StatutCommande, Set<StatutCommande>> TRANSITIONS = Map.of(
+            StatutCommande.EN_ATTENTE, Set.of(StatutCommande.CONFIRMEE, StatutCommande.ANNULEE),
+            StatutCommande.CONFIRMEE, Set.of(StatutCommande.EN_PREPARATION, StatutCommande.ANNULEE),
+            StatutCommande.EN_PREPARATION, Set.of(StatutCommande.LIVREE, StatutCommande.ANNULEE),
+            StatutCommande.LIVREE, Set.of(),
+            StatutCommande.ANNULEE, Set.of()
     );
 
     private final CommandeRepository commandeRepository;
@@ -67,15 +69,15 @@ public class CommandeService {
     }
 
     @Transactional
-    public CommandeResponseDTO updateStatut(Long id, Statut nouveauStatut) {
+    public CommandeResponseDTO updateStatut(Long id, StatutCommande nouveauStatut) {
         Commande commande = findEntity(id);
-        Statut actuel = commande.getStatut();
+        StatutCommande actuel = commande.getStatut();
         if (!TRANSITIONS.getOrDefault(actuel, Set.of()).contains(nouveauStatut)) {
             throw new BusinessException(
                     String.format("Transition invalide : %s -> %s", actuel, nouveauStatut));
         }
         commande.setStatut(nouveauStatut);
-        if (nouveauStatut == Statut.LIVREE) {
+        if (nouveauStatut == StatutCommande.LIVREE) {
             commande.setDateLivraison(java.time.LocalDateTime.now());
         }
         return mapper.toResponseDTO(commandeRepository.save(commande));

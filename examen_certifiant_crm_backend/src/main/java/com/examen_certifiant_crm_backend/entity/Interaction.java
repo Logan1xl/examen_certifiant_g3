@@ -1,5 +1,7 @@
 package com.examen_certifiant_crm_backend.entity;
 
+import com.examen_certifiant_crm_backend.enums.StatutInteraction;
+import com.examen_certifiant_crm_backend.enums.TypeInteraction;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -30,6 +32,7 @@ public class Interaction {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Type type;
+    private TypeInteraction type;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -40,6 +43,7 @@ public class Interaction {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Statut statut = Statut.OUVERTE;
+    private StatutInteraction statut = StatutInteraction.OUVERTE;
 
     public Interaction() {}
 
@@ -51,10 +55,14 @@ public class Interaction {
     public void setAgent(AgentCRM agent) { this.agent = agent; }
     public Type getType() { return type; }
     public void setType(Type type) { this.type = type; }
+    public TypeInteraction getType() { return type; }
+    public void setType(TypeInteraction type) { this.type = type; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
     public LocalDateTime getDateInteraction() { return dateInteraction; }
     public void setDateInteraction(LocalDateTime dateInteraction) { this.dateInteraction = dateInteraction; }
     public Statut getStatut() { return statut; }
     public void setStatut(Statut statut) { this.statut = statut; }
+    public StatutInteraction getStatut() { return statut; }
+    public void setStatut(StatutInteraction statut) { this.statut = statut; }
 }
