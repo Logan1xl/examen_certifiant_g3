@@ -1,6 +1,8 @@
 package com.examen_certifiant_crm_backend.repository;
 
 import com.examen_certifiant_crm_backend.entity.Interaction;
+import com.examen_certifiant_crm_backend.entity.Interaction.Statut;
+import com.examen_certifiant_crm_backend.entity.Interaction.Type;
 import com.examen_certifiant_crm_backend.enums.StatutInteraction;
 import com.examen_certifiant_crm_backend.enums.TypeInteraction;
 import org.springframework.data.domain.Page;

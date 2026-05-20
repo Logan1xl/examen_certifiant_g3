@@ -7,6 +7,8 @@ import com.examen_certifiant_crm_backend.exception.ResourceNotFoundException;
 import com.examen_certifiant_crm_backend.mapper.CommandeMapper;
 import com.examen_certifiant_crm_backend.entity.Client;
 import com.examen_certifiant_crm_backend.entity.Commande;
+import com.examen_certifiant_crm_backend.entity.Commande.Statut;
+import com.examen_certifiant_crm_backend.entity.Restaurant;
 import com.examen_certifiant_crm_backend.entity.Restaurant;
 import com.examen_certifiant_crm_backend.enums.StatutCommande;
 import com.examen_certifiant_crm_backend.repository.ClientRepository;
