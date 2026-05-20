@@ -16,7 +16,7 @@ spring:
     default-property-inclusion: non_null
 
 server:
-  port: 8080
+  port: 8087
 
 jwt:
   secret: digitrans-cm-crm-secret-key-2026-must-be-256bits-long
