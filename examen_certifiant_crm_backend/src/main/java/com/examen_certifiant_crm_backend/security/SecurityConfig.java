@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers(
                     "/swagger-ui/**", "/swagger-ui.html",
-                    "/v3/api-docs/**").permitAll()
+                    "/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health").permitAll()
 
                 // Gestion des agents CRM : ADMIN uniquement
@@ -106,11 +106,8 @@ public class SecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        
-        authProvider.setUserDetailsService(userDetailsService); 
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-        
         return authProvider;
     }
     @Bean

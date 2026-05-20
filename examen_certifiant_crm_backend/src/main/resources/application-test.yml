@@ -13,3 +13,6 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
   flyway:
     enabled: false
+jwt:
+  secret: digitrans-cm-crm-secret-key-2026-must-be-256bits-long
+  expiration: 86400000

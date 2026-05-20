@@ -1,6 +1,6 @@
 package com.examen_certifiant_crm_backend.security;
 
-import com.examen_certifiant_crm_backend.model.AgentCRM;
+import com.examen_certifiant_crm_backend.entity.AgentCRM;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
