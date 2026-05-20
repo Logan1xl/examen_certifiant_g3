@@ -5,6 +5,7 @@ import com.examen_certifiant_crm_backend.entity.Commande;
 import com.examen_certifiant_crm_backend.exception.BusinessException;
 import com.examen_certifiant_crm_backend.exception.ResourceNotFoundException;
 import com.examen_certifiant_crm_backend.service.CommandeService;
+import com.examen_certifiant_crm_backend.enums.StatutCommande;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -85,7 +86,7 @@ class CommandeControllerTest {
     void updateStatut_shouldReturnUpdated() throws Exception {
         CommandeResponseDTO response = createCommandeResponse();
         response.setStatut("CONFIRMEE");
-        when(commandeService.updateStatut(1L, Commande.Statut.CONFIRMEE)).thenReturn(response);
+        when(commandeService.updateStatut(1L, StatutCommande.CONFIRMEE)).thenReturn(response);
 
         mockMvc.perform(patch("/api/commandes/1/statut")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -96,7 +97,7 @@ class CommandeControllerTest {
 
     @Test
     void updateStatut_shouldReturn400_whenInvalidTransition() throws Exception {
-        when(commandeService.updateStatut(1L, Commande.Statut.LIVREE))
+        when(commandeService.updateStatut(1L, StatutCommande.LIVREE))
                 .thenThrow(new BusinessException("Transition invalide : EN_ATTENTE -> LIVREE"));
 
         mockMvc.perform(patch("/api/commandes/1/statut")

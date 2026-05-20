@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 @Table(name = "fidelite")
 public class Fidelite {
 
-    public enum Niveau {
-        NOUVEAU, BRONZE, SILVER, GOLD, PLATINUM
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +22,6 @@ public class Fidelite {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private Niveau niveau = Niveau.NOUVEAU;
     private NiveauFidelite niveau = NiveauFidelite.NOUVEAU;
 
     @Column(name = "date_debut")
@@ -42,8 +38,6 @@ public class Fidelite {
     public void setClient(Client client) { this.client = client; }
     public int getPoints() { return points; }
     public void setPoints(int points) { this.points = points; }
-    public Niveau getNiveau() { return niveau; }
-    public void setNiveau(Niveau niveau) { this.niveau = niveau; }
     public NiveauFidelite getNiveau() { return niveau; }
     public void setNiveau(NiveauFidelite niveau) { this.niveau = niveau; }
     public LocalDateTime getDateDebut() { return dateDebut; }
