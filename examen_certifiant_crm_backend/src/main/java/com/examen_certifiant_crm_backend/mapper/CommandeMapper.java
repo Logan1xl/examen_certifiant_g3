@@ -2,7 +2,7 @@ package com.examen_certifiant_crm_backend.mapper;
 
 import com.examen_certifiant_crm_backend.dto.request.CommandeRequestDTO;
 import com.examen_certifiant_crm_backend.dto.response.CommandeResponseDTO;
-import com.examen_certifiant_crm_backend.model.Commande;
+import com.examen_certifiant_crm_backend.entity.Commande;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
