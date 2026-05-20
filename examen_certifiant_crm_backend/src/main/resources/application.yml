@@ -72,3 +72,13 @@ spring:
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    app:
+  jwt:
+    secret: "kIXAM5/6W4KIbJxr5sCPqt37yFjL7pJATXpBrnBhMl0Kb1vk0su6nE1ezIHJKzt6okZn+Tv/RpiaBG7+b1nkaw=="
+    expiration-ms: 86400000
+
+    spring:
+  security:
+    user:
+      name: admin
+      password: admin
