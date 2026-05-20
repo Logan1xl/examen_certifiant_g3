@@ -26,8 +26,10 @@ public class InteractionController {
     }
 
     @GetMapping
-    @Operation(summary = "Lister toutes les interactions")
-    @ApiResponse(responseCode = "200", description = "Liste des interactions")
+    @Operation(summary = "Lister toutes les interactions", description = "Retourne une page de toutes les interactions enregistrées")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Liste des interactions retournée avec succès")
+    })
     public ResponseEntity<Page<InteractionResponseDTO>> findAll(Pageable pageable) {
         return ResponseEntity.ok(interactionService.findAll(pageable));
     }

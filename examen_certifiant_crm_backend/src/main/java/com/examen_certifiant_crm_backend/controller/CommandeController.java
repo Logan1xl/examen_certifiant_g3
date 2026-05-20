@@ -2,7 +2,7 @@ package com.examen_certifiant_crm_backend.controller;
 
 import com.examen_certifiant_crm_backend.dto.request.CommandeRequestDTO;
 import com.examen_certifiant_crm_backend.dto.response.CommandeResponseDTO;
-import com.examen_certifiant_crm_backend.entity.Commande;
+import com.examen_certifiant_crm_backend.enums.StatutCommande;
 import com.examen_certifiant_crm_backend.service.CommandeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -57,14 +57,14 @@ public class CommandeController {
 
     @PatchMapping("/{id}/statut")
     @Operation(summary = "Mettre à jour le statut d'une commande",
-              description = "Transitions valides : EN_ATTENTE -> CONFIRMEE/ANNULEE, CONFIRMEE -> EN_PREPARATION/ANNULEE, EN_PREPARATION -> LIVREE/ANNULEE")
+              description = "Permet de faire transiter le statut d'une commande selon le workflow défini (ex: EN_ATTENTE -> CONFIRMEE/ANNULEE).")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Statut mis à jour"),
-        @ApiResponse(responseCode = "400", description = "Transition invalide"),
+        @ApiResponse(responseCode = "200", description = "Statut de la commande mis à jour avec succès"),
+        @ApiResponse(responseCode = "400", description = "Transition de statut invalide ou corps de requête incorrect"),
         @ApiResponse(responseCode = "404", description = "Commande non trouvée")
     })
     public ResponseEntity<CommandeResponseDTO> updateStatut(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        Commande.Statut statut = Commande.Statut.valueOf(body.get("statut"));
+        StatutCommande statut = StatutCommande.valueOf(body.get("statut"));
         return ResponseEntity.ok(commandeService.updateStatut(id, statut));
     }
 }

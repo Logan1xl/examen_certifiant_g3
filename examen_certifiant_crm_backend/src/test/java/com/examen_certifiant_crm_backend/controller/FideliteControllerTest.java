@@ -4,6 +4,7 @@ import com.examen_certifiant_crm_backend.entity.Client;
 import com.examen_certifiant_crm_backend.entity.Fidelite;
 import com.examen_certifiant_crm_backend.exception.ResourceNotFoundException;
 import com.examen_certifiant_crm_backend.service.FideliteService;
+import com.examen_certifiant_crm_backend.enums.NiveauFidelite;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -69,7 +70,7 @@ class FideliteControllerTest {
         fidelite.setId(1L);
         fidelite.setClient(client);
         fidelite.setPoints(150);
-        fidelite.setNiveau(Fidelite.Niveau.BRONZE);
+        fidelite.setNiveau(NiveauFidelite.BRONZE);
         fidelite.setDateDebut(LocalDateTime.now());
         return fidelite;
     }

@@ -26,8 +26,10 @@ public class RestaurantController {
     }
 
     @GetMapping
-    @Operation(summary = "Lister tous les restaurants actifs")
-    @ApiResponse(responseCode = "200", description = "Liste des restaurants")
+    @Operation(summary = "Lister tous les restaurants actifs", description = "Retourne une page de tous les restaurants actifs")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Liste des restaurants retournée avec succès")
+    })
     public ResponseEntity<Page<RestaurantResponseDTO>> findAll(Pageable pageable) {
         return ResponseEntity.ok(restaurantService.findAllActifs(pageable));
     }

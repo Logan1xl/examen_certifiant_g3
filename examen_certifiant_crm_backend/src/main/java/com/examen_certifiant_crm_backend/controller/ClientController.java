@@ -27,7 +27,9 @@ public class ClientController {
 
     @GetMapping
     @Operation(summary = "Lister tous les clients actifs", description = "Retourne une page de clients actifs")
-    @ApiResponse(responseCode = "200", description = "Liste des clients actifs")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Liste des clients actifs retournée avec succès")
+    })
     public ResponseEntity<Page<ClientResponseDTO>> findAll(Pageable pageable) {
         return ResponseEntity.ok(clientService.findAllActifs(pageable));
     }
@@ -44,6 +46,9 @@ public class ClientController {
 
     @GetMapping("/search")
     @Operation(summary = "Rechercher des clients par mot-clé", description = "Recherche dans nom, prénom et email")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Résultats de la recherche retournés avec succès")
+    })
     public ResponseEntity<Page<ClientResponseDTO>> search(@RequestParam String keyword, Pageable pageable) {
         return ResponseEntity.ok(clientService.search(keyword, pageable));
     }
