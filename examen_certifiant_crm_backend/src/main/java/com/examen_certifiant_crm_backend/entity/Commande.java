@@ -1,5 +1,6 @@
-package com.examen_certifiant_crm_backend.model;
+package com.examen_certifiant_crm_backend.entity;
 
+import com.examen_certifiant_crm_backend.enums.StatutCommande;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -8,9 +9,6 @@ import java.time.LocalDateTime;
 @Table(name = "commande")
 public class Commande {
 
-    public enum Statut {
-        EN_ATTENTE, CONFIRMEE, EN_PREPARATION, LIVREE, ANNULEE
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +27,7 @@ public class Commande {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private Statut statut = Statut.EN_ATTENTE;
+    private StatutCommande statut = StatutCommande.EN_ATTENTE;
 
     @Column(name = "date_commande", updatable = false)
     private LocalDateTime dateCommande = LocalDateTime.now();
@@ -47,8 +45,8 @@ public class Commande {
     public void setRestaurant(Restaurant restaurant) { this.restaurant = restaurant; }
     public BigDecimal getMontant() { return montant; }
     public void setMontant(BigDecimal montant) { this.montant = montant; }
-    public Statut getStatut() { return statut; }
-    public void setStatut(Statut statut) { this.statut = statut; }
+    public StatutCommande getStatut() { return statut; }
+    public void setStatut(StatutCommande statut) { this.statut = statut; }
     public LocalDateTime getDateCommande() { return dateCommande; }
     public void setDateCommande(LocalDateTime dateCommande) { this.dateCommande = dateCommande; }
     public LocalDateTime getDateLivraison() { return dateLivraison; }

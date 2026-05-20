@@ -2,7 +2,7 @@ package com.examen_certifiant_crm_backend.service;
 
 import com.examen_certifiant_crm_backend.dto.response.RestaurantResponseDTO;
 import com.examen_certifiant_crm_backend.exception.ResourceNotFoundException;
-import com.examen_certifiant_crm_backend.model.Restaurant;
+import com.examen_certifiant_crm_backend.entity.Restaurant;
 import com.examen_certifiant_crm_backend.repository.RestaurantRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

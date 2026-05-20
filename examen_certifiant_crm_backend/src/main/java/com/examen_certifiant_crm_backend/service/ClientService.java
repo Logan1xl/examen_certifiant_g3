@@ -4,9 +4,10 @@ import com.examen_certifiant_crm_backend.dto.request.ClientRequestDTO;
 import com.examen_certifiant_crm_backend.dto.response.ClientResponseDTO;
 import com.examen_certifiant_crm_backend.exception.ResourceNotFoundException;
 import com.examen_certifiant_crm_backend.mapper.ClientMapper;
-import com.examen_certifiant_crm_backend.model.Client;
-import com.examen_certifiant_crm_backend.model.Fidelite;
-import com.examen_certifiant_crm_backend.model.Restaurant;
+import com.examen_certifiant_crm_backend.entity.Client;
+import com.examen_certifiant_crm_backend.entity.Fidelite;
+import com.examen_certifiant_crm_backend.entity.Restaurant;
+import com.examen_certifiant_crm_backend.enums.NiveauFidelite;
 import com.examen_certifiant_crm_backend.repository.ClientRepository;
 import com.examen_certifiant_crm_backend.repository.FideliteRepository;
 import com.examen_certifiant_crm_backend.repository.RestaurantRepository;
@@ -58,7 +59,7 @@ public class ClientService {
         client = clientRepository.save(client);
         Fidelite fidelite = new Fidelite();
         fidelite.setClient(client);
-        fidelite.setNiveau(Fidelite.Niveau.NOUVEAU);
+        fidelite.setNiveau(NiveauFidelite.NOUVEAU);
         fideliteRepository.save(fidelite);
         return mapper.toResponseDTO(client);
     }
