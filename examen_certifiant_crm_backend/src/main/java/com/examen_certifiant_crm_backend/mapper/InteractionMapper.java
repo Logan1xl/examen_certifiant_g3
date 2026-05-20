@@ -2,7 +2,7 @@ package com.examen_certifiant_crm_backend.mapper;
 
 import com.examen_certifiant_crm_backend.dto.request.InteractionRequestDTO;
 import com.examen_certifiant_crm_backend.dto.response.InteractionResponseDTO;
-import com.examen_certifiant_crm_backend.model.Interaction;
+import com.examen_certifiant_crm_backend.entity.Interaction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

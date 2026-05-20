@@ -1,4 +1,4 @@
-package com.examen_certifiant_crm_backend.model;
+package com.examen_certifiant_crm_backend.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
