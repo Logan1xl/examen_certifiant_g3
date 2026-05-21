@@ -8,7 +8,12 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', // Port par défaut du backend Spring Boot
+        target: 'http://localhost:8087',
+        changeOrigin: true,
+        secure: false
+      },
+      '/auth': {
+        target: 'http://localhost:8087',
         changeOrigin: true,
         secure: false
       }
