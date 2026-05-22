@@ -1,75 +1,349 @@
-# DIGITRANS-CM — Module CRM
+# DIGITRANS-CM — Module CRM SavoirManger
 
-## Contexte
+**Modernisation de la gestion de la relation client** des restaurants SavoirManger au Cameroun (Douala, Yaoundé, Bafoussam, Garoua, Ngaoundéré).  
+Projet mené par **CAMTECH SOLUTIONS S.A.** pour **AGROCAM S.A.**
 
-Projet **DIGITRANS-CM** mené par **CAMTECH SOLUTIONS S.A.** pour **AGROCAM S.A.** (enseigne SavoirManger).  
-Le module CRM modernise la gestion de la relation client des restaurants SavoirManger au Cameroun (Douala, Yaoundé, Bafoussam, Garoua, Ngaoundéré).
+---
+
+## Architecture
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│                    Client (React 19 + Vite 8)                │
+│  port:3000  →  proxy /api, /auth → localhost:8087           │
+└──────────────────────┬───────────────────────────────────────┘
+                       │  HTTP (JSON + JWT Bearer)
+┌──────────────────────▼───────────────────────────────────────┐
+│              Backend (Spring Boot 4.0.6 + Java 21)           │
+│  port:8087  →  H2 (dev) / PostgreSQL (prod)                  │
+│  Sécurité : Spring Security + JWT (jjwt 0.12.5)             │
+│  API : RESTful + Swagger (springdoc-openapi 3.0.2)          │
+│  Mapping : MapStruct 1.5.5, validation : Jakarta Validation  │
+└──────────────────────────────────────────────────────────────┘
+```
 
 ## Technologies
 
 | Couche | Technologie |
 |---|---|
-| Backend | Spring Boot 4.0.6, Java 17, Maven |
-| Persistance | JPA / Hibernate, Flyway, PostgreSQL (prod), H2 (dev) |
-| Sécurité | JWT (jjwt 0.12.5) avec rôles ADMIN_RESTAURANT, AGENT_TERRAIN, DG |
-| API | RESTful, documentation Swagger (springdoc-openapi 3.0.2) |
-| Mapping | MapStruct 1.5.5.Final, Lombok |
-| Frontend | React 18, Vite, Tailwind CSS, Axios |
-| Cloud | AWS Afrique du Sud (af-south-1) |
+| Backend | Spring Boot 4.0.6, Java 21, Maven |
+| Base de données | H2 (dev), PostgreSQL 16 (prod) |
+| ORM | JPA / Hibernate 7.2.12 |
+| Migration | Flyway (prod) |
+| Sécurité | Spring Security + JWT (jjwt 0.12.5) |
+| API | RESTful, Swagger UI (springdoc-openapi 3.0.2) |
+| Mapping | MapStruct 1.5.5.Final |
+| Frontend | React 19.2, Vite 8, React Router 6.28 |
+| UI | Material UI 6.4, Recharts 2.15 |
+| HTTP | Axios 1.7.9 |
+| Outils | Lombok, DevTools |
 
 ## Structure du projet
 
 ```
-examen_certifiant_crm_backend/
-├── src/main/java/com/examen_certifiant_crm_backend/
-│   ├── config/           # Config Spring (Security, CORS, Swagger)
-│   ├── security/         # JWT (provider, filter, UserDetailsService)
-│   ├── model/            # Entités JPA (Client, Restaurant, Commande, Interaction, Fidelite, AgentCRM)
-│   ├── dto/
-│   │   ├── request/      # DTOs entrée avec validation (ClientRequest, CommandeRequest, InteractionRequest)
-│   │   └── response/     # DTOs sortie (ClientResponse, CommandeResponse, InteractionResponse, RestaurantResponse)
-│   ├── repository/       # Spring Data JPA (Client, Restaurant, Commande, Interaction, Fidelite, AgentCRM)
-│   ├── service/          # Logique métier (Client, Commande, Restaurant, Interaction, Fidelite)
-│   ├── controller/       # Contrôleurs REST
-│   ├── mapper/           # MapStruct (ClientMapper, CommandeMapper, InteractionMapper)
-│   └── exception/        # GlobalExceptionHandler, ResourceNotFoundException, BusinessException
-├── src/main/resources/
-│   ├── application.yml           # Configuration multi-profile (dev/prod)
-│   └── db/migration/             # Flyway (V1__init_schema.sql)
-└── pom.xml
+DIGITRANS-CM-PROJET/
+├── README.md
+├── examen_certifiant_crm_backend/
+│   ├── pom.xml
+│   └── src/main/java/com/examen_certifiant_crm_backend/
+│       ├── config/               # Config Spring
+│       │   ├── CorsConfig.java        # CORS (localhost:3000, crm.savoirmanger.cm)
+│       │   ├── DataInitializer.java   # Seed data (agents, clients, restaurants…)
+│       │   ├── JacksonConfig.java     # JSON configuration
+│       │   ├── OpenApiConfig.java     # Swagger/OpenAPI
+│       │   └── WebMvcConfig.java      # LocaleResolver (fr_CM), i18n
+│       ├── security/             # Sécurité JWT
+│       │   ├── JwtUtils.java          # Génération/validation JWT
+│       │   ├── JwtAuthFilter.java     # Filtre d'authentification
+│       │   ├── JwtAuthEntryPoint.java # Point d'entrée 401
+│       │   ├── SecurityConfig.java    # Spring Security config
+│       │   ├── UserDetailsImpl.java   # UserDetails custom
+│       │   └── UserDetailsServiceImpl.java
+│       ├── dto/
+│       │   ├── request/               # DTOs entrée + validation
+│       │   │   ├── LoginRequestDTO.java
+│       │   │   ├── RegisterRequestDTO.java
+│       │   │   ├── ClientRequestDTO.java
+│       │   │   ├── CommandeRequestDTO.java
+│       │   │   └── InteractionRequestDTO.java
+│       │   └── response/              # DTOs sortie
+│       │       ├── LoginResponseDTO.java
+│       │       ├── ClientResponseDTO.java
+│       │       ├── CommandeResponseDTO.java
+│       │       ├── InteractionResponseDTO.java
+│       │       ├── RestaurantResponseDTO.java
+│       │       └── FideliteResponseDTO.java
+│       ├── entity/               # Entités JPA
+│       │   ├── AgentCRM.java
+│       │   ├── Client.java
+│       │   ├── Commande.java
+│       │   ├── Fidelite.java
+│       │   ├── Interaction.java
+│       │   └── Restaurant.java
+│       ├── repository/           # Spring Data JPA
+│       │   ├── AgentCRMRepository.java
+│       │   ├── ClientRepository.java
+│       │   ├── CommandeRepository.java
+│       │   ├── FideliteRepository.java
+│       │   ├── InteractionRepository.java
+│       │   └── RestaurantRepository.java
+│       ├── service/              # Logique métier
+│       │   ├── ClientService.java
+│       │   ├── CommandeService.java
+│       │   ├── FideliteService.java
+│       │   ├── InteractionService.java
+│       │   └── RestaurantService.java
+│       ├── controller/           # Contrôleurs REST
+│       │   ├── AuthController.java
+│       │   ├── ClientController.java
+│       │   ├── CommandeController.java
+│       │   ├── DashboardController.java
+│       │   ├── FideliteController.java
+│       │   ├── InteractionController.java
+│       │   └── RestaurantController.java
+│       ├── mapper/               # MapStruct
+│       │   ├── ClientMapper.java
+│       │   ├── CommandeMapper.java
+│       │   └── InteractionMapper.java
+│       └── exception/            # Gestion des erreurs
+│           ├── GlobalExceptionHandler.java
+│           ├── ResourceNotFoundException.java
+│           └── BusinessException.java
+│
+├── examen_certifiant_crm_frontend/
+│   ├── package.json
+│   ├── vite.config.js           # Proxy (port:3000 → backend:8087)
+│   └── src/
+│       ├── main.jsx
+│       ├── App.jsx              # Routes principales
+│       ├── context/
+│       │   └── AuthContext.jsx   # Authentification (JWT, rôles RBAC)
+│       ├── hooks/
+│       │   ├── useApi.js        # Hook générique API avec loading/error
+│       │   ├── useDebounce.js   # Hook anti-rebond
+│       │   └── useLocalStorage.js
+│       ├── services/            # Couche API Axios
+│       │   ├── api.js           # Instance Axios (intercepteur JWT)
+│       │   ├── authService.js   # /auth/login, /register
+│       │   ├── clientService.js # /api/clients
+│       │   ├── commandeService.js
+│       │   ├── restaurantService.js
+│       │   └── interactionService.js
+│       ├── pages/               # Pages de l'application
+│       │   ├── Login.jsx
+│       │   ├── Dashboard.jsx
+│       │   ├── Clients.jsx
+│       │   ├── Commandes.jsx
+│       │   ├── Restaurants.jsx
+│       │   ├── Interactions.jsx
+│       │   ├── Landing.jsx
+│       │   ├── auth/
+│       │   ├── clients/
+│       │   ├── commandes/
+│       │   └── restaurants/
+│       ├── components/
+│       │   ├── common/
+│       │   └── Layout/
+│       └── assets/
 ```
 
 ## Prérequis
 
-- Java 17+
-- Maven 3.8+
-- Docker (optionnel, pour PostgreSQL)
+- **Java 21+** (le projet tourne sur Java 21 runtime)
+- **Maven 3.8+**
+- **Node.js 20+** et **npm 10+**
+
+## Installation
+
+### Backend
+
+```bash
+cd examen_certifiant_crm_backend
+.\mvnw.cmd clean install -DskipTests
+```
+
+### Frontend
+
+```bash
+cd examen_certifiant_crm_frontend
+npm install
+```
 
 ## Exécution en développement
 
+### 1. Démarrer le backend (H2, auto-ddl)
+
 ```bash
-# Backend (H2, auto-ddl)
 cd examen_certifiant_crm_backend
-mvn spring-boot:run -Dspring.profiles.active=dev
-
-# Swagger : http://localhost:8080/swagger-ui.html
-# H2 console : http://localhost:8080/h2-console
+$env:SPRING_PROFILES_ACTIVE='dev'   # PowerShell
+.\mvnw.cmd spring-boot:run
 ```
 
-## Exécution en production
-
+Sur Linux/Mac :
 ```bash
-# Avec PostgreSQL
-export DB_HOST=localhost DB_PORT=5432 DB_NAME=digitrans_crm DB_USER=crm_user DB_PASSWORD=*** 
-mvn spring-boot:run -Dspring.profiles.active=prod
+cd examen_certifiant_crm_backend
+export SPRING_PROFILES_ACTIVE=dev
+./mvnw spring-boot:run
 ```
 
-## Build
+Le backend démarre sur **http://localhost:8087** avec :
+- **H2 Console** : http://localhost:8087/h2-console (JDBC URL : `jdbc:h2:mem:digitrans_crm`)
+- **Swagger UI** : http://localhost:8087/swagger-ui.html
+- **API Docs** : http://localhost:8087/api-docs
+
+### 2. Démarrer le frontend
 
 ```bash
-mvn clean package -DskipTests
+cd examen_certifiant_crm_frontend
+npm run dev
+```
+
+Le frontend démarre sur **http://localhost:3000** et proxyie `/api` et `/auth` vers `http://localhost:8087`.
+
+## Comptes de démonstration (seed data)
+
+Tous les comptes utilisent le mot de passe **`password`** :
+
+| Email | Rôle | Accès |
+|---|---|---|
+| `admin@test.com` | ADMIN | Accès total (CRUD, création d'agents) |
+| `manager@test.com` | MANAGER | Gestion opérationnelle |
+| `agent@test.com` | AGENT | Utilisation courante |
+| `resto@test.com` | AGENT_RESTAURANT | Restreint aux fonctionnalités restaurant |
+
+## API REST — Endpoints
+
+### Authentification
+
+| Méthode | Endpoint | Description | Accès |
+|---|---|---|---|
+| POST | `/auth/login` | Connexion → retourne JWT | Public |
+| POST | `/auth/register` | Création compte AGENT | Public |
+| POST | `/auth/admin/creer-agent` | Création compte avec rôle choisi | ADMIN |
+
+### Clients
+
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/clients` | Liste tous les clients |
+| GET | `/api/clients/{id}` | Détail d'un client |
+| POST | `/api/clients` | Créer un client |
+| PUT | `/api/clients/{id}` | Modifier un client |
+| DELETE | `/api/clients/{id}` | Supprimer un client |
+| GET | `/api/clients/search?nom=...` | Recherche par nom |
+| GET | `/api/clients/ville/{ville}` | Clients par ville |
+
+### Commandes
+
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/commandes` | Liste toutes les commandes |
+| GET | `/api/commandes/{id}` | Détail d'une commande |
+| POST | `/api/commandes` | Créer une commande |
+| PUT | `/api/commandes/{id}` | Modifier une commande |
+| DELETE | `/api/commandes/{id}` | Supprimer une commande |
+| PATCH | `/api/commandes/{id}/statut` | Mettre à jour le statut |
+| GET | `/api/commandes/restaurant/{id}` | Commandes par restaurant |
+| GET | `/api/commandes/stats` | Statistiques des commandes |
+
+### Restaurants
+
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/restaurants` | Liste tous les restaurants |
+| GET | `/api/restaurants/{id}` | Détail d'un restaurant |
+| GET | `/api/restaurants/stats` | Statistiques par restaurant |
+
+### Interactions
+
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/interactions` | Liste toutes les interactions |
+| POST | `/api/interactions` | Créer une interaction |
+| PATCH | `/api/interactions/{id}/close` | Clore une interaction |
+| GET | `/api/interactions/client/{id}` | Interactions d'un client |
+
+### Fidélité
+
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/fidelites` | Liste tous les profils fidélité |
+| GET | `/api/fidelites/{id}` | Détail d'un profil |
+
+### Dashboard
+
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/dashboard/stats` | Statistiques globales (KPIs) |
+
+## Pages Frontend
+
+| Route | Page | Description |
+|---|---|---|
+| `/login` | Login | Authentification JWT |
+| `/` | Dashboard | KPIs, graphiques (Recharts) |
+| `/clients` | Clients | Liste, recherche, CRUD |
+| `/commandes` | Commandes | Liste, CRUD, filtres |
+| `/restaurants` | Restaurants | Liste des partenaires |
+| `/interactions` | Interactions | Suivi des échanges clients |
+
+## Profils Spring Boot
+
+### Dev (profil actif par défaut)
+```yaml
+# application-dev.yml
+spring:
+  datasource:
+    url: jdbc:h2:mem:digitrans_crm;DB_CLOSE_DELAY=-1
+  jpa:
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: false   # Désactivé en dev (auto-ddl + seed data)
+```
+
+### Prod
+```yaml
+# application-prod.yml (variables d'env : DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD)
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+```
+
+## Build & Déploiement
+
+### Backend
+
+```bash
+cd examen_certifiant_crm_backend
+.\mvnw.cmd clean package -DskipTests
 java -jar target/examen_certifiant_crm_backend-0.0.1-SNAPSHOT.jar
 ```
+
+### Frontend
+
+```bash
+cd examen_certifiant_crm_frontend
+npm run build     # Produit dist/
+npm run preview   # Prévisualisation du build
+```
+
+## Variables d'environnement (prod)
+
+| Variable | Défaut | Description |
+|---|---|---|
+| `SPRING_PROFILES_ACTIVE` | `dev` | Profil actif |
+| `DB_HOST` | `localhost` | Hôte PostgreSQL |
+| `DB_PORT` | `5432` | Port PostgreSQL |
+| `DB_NAME` | `digitrans_crm` | Nom de la base |
+| `DB_USER` | `crm_user` | Utilisateur |
+| `DB_PASSWORD` | — | Mot de passe |
 
 ## Équipe
 
@@ -79,19 +353,6 @@ java -jar target/examen_certifiant_crm_backend-0.0.1-SNAPSHOT.jar
 | Backend & Anomalies | NGO NGWA Suzanne |
 | Frontend & API | TAMBAT Yvann |
 
-## Tâches
+## Licence
 
-| Tâche | Description | Responsable | Statut |
-|---|---|---|---|
-| T1 | Créer projet Spring Boot, config DB, JWT | TAMBAT Yvann | ✅ |
-| T2 | Entités JPA | NGO NGWA S. | ✅ |
-| **T3** | **Repository, Services, DTOs, Mappers** | **TAMBAT Yvann** | **✅** |
-| T4 | API REST (CRUD zones, taux occupation) | TAMBAT Yvann | ⏳ |
-| T5 | Règle anomalie (saturation > 95%) | NGO NGWA S. | ⏳ |
-| T6 | Backend historique anomalies & interventions | TAMBAT Yvann | ⏳ |
-| T7 | React : structure + routing + auth | MBONGO | ⏳ |
-| T8 | Composant Liste zones + tableau de bord | NGO NGWA S. | ⏳ |
-| T9 | Composant Détail zone + alertes | MBONGO | ⏳ |
-| T10 | Consignation intervention (formulaire) | TAMBAT Yvann | ⏳ |
-| T11 | Tests unitaires + intégration | Collectif | ⏳ |
-| T12 | Docker + déploiement staging AWS | MBONGO | ⏳ |
+Projet interne **CAMTECH SOLUTIONS S.A.** — Tous droits réservés.
