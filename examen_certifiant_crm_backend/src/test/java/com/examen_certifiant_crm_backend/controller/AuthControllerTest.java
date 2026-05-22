@@ -1,7 +1,7 @@
 package com.examen_certifiant_crm_backend.controller;
 
-import com.examen_certifiant_crm_backend.dto.LoginRequestDTO;
-import com.examen_certifiant_crm_backend.dto.RegisterRequestDTO;
+import com.examen_certifiant_crm_backend.dto.request.LoginRequestDTO;
+import com.examen_certifiant_crm_backend.dto.request.RegisterRequestDTO;
 import com.examen_certifiant_crm_backend.entity.AgentCRM;
 import com.examen_certifiant_crm_backend.repository.AgentCRMRepository;
 import com.examen_certifiant_crm_backend.security.JwtUtils;
